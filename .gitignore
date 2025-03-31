@@ -1,0 +1,19 @@
+# Java
+*.class
+*.jar
+*.war
+*.zip
+target/
+logs/
+*.log
+*.iml
+.idea/
+*.swp
+.DS_Store
+
+# AWS
+.env
+*.pem
+
+# Maven
+dependency-reduced-pom.xml
