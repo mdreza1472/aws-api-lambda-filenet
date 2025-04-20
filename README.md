@@ -52,7 +52,7 @@ It supports:
 ```
 
 
-## Test event payload:
+## Test event payload (ONLY to directly test the lambda function):
 {
   "resource": "/{proxy+}",
   "path": "/test",
