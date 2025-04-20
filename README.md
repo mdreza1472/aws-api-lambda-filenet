@@ -137,5 +137,5 @@ It supports:
   "isBase64Encoded": false
 }
 
-##Use below command to create the fat/uber jar
+## Use below command to create the fat/uber jar
 clean package -Passembly-zip
