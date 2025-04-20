@@ -12,3 +12,4 @@ SAP must sign each HTTP request to API Gateway using SigV4		Required (AWS SigV4 
 
 **SAP will use a middleware layer to include the Authorization header (AWS Signature) 
 when calling your API Gateway endpoint.
+AWS SDK utilized*
