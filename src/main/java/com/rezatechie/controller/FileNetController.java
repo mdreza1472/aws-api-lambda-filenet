@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.rezatechie.dto.DocumentTO;
 import com.rezatechie.filenet.FileNetService;
 
+@EnableWebMvc
 @RestController
 @RequestMapping("/filenet")
 public class FileNetController {
@@ -28,6 +30,8 @@ public class FileNetController {
     /**
      * Download a document from FileNet using its GUID.
      */
+    //ResponseEntity<byte[]> will automatically make your body binary.
+    //serverless-java-container will base64 encode it automatically if needed.
     @GetMapping("/download/{guid}")
     public ResponseEntity<byte[]> downloadDocument(@PathVariable String guid) {
         try {

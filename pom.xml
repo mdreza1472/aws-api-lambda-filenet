@@ -37,12 +37,13 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.amazonaws.serverless</groupId>
-			<artifactId>aws-serverless-java-container-springboot3</artifactId>
-			<version>2.1.2</version>
+			<artifactId>aws-serverless-java-container-core</artifactId>
+			<version>2.1.2</version> <!-- or latest -->
 		</dependency>
+
+		<!-- For test utility classes like AwsProxyRequestBuilder, MockLambdaContext -->
 		<dependency>
 			<groupId>com.amazonaws.serverless</groupId>
 			<artifactId>aws-serverless-java-container-core</artifactId>
@@ -51,10 +52,19 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
+
+
+
+
+		<dependency>
+			<groupId>com.amazonaws.serverless</groupId>
+			<artifactId>aws-serverless-java-container-springboot3</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.httpcomponents.client5</groupId>
 			<artifactId>httpclient5</artifactId>
-			<version>5.4.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -62,7 +72,6 @@
 			<groupId>com.ibm.filenet</groupId>
 			<artifactId>Jace</artifactId>
 			<version>5.5</version>
-
 		</dependency>
 
 		<dependency>
@@ -96,36 +105,6 @@
 	</dependencyManagement>
 
 	<profiles>
-		<profile>
-			<id>shaded-jar</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-shade-plugin</artifactId>
-						<version>3.6.0</version>
-						<configuration>
-							<createDependencyReducedPom>false</createDependencyReducedPom>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>shade</goal>
-								</goals>
-								<configuration>
-									<artifactSet>
-										<excludes>
-											<exclude>org.apache.tomcat.embed:*</exclude>
-										</excludes>
-									</artifactSet>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<profile>
 			<id>assembly-zip</id>
 			<activation>
@@ -250,27 +229,49 @@
 							</execution>
 						</executions>
 					</plugin>
+
+					<!-- Step 1: Build a Fat Jar -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>3.4.1</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>shade</goal>
+								</goals>
+								<configuration>
+									<createDependencyReducedPom>false</createDependencyReducedPom>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Step 2: Auto-create Zip after Fat Jar -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-assembly-plugin</artifactId>
-						<version>3.7.1</version>
+						<version>3.4.2</version>
 						<executions>
 							<execution>
-								<id>zip-assembly</id>
+								<id>zip-fat-jar</id>
 								<phase>package</phase>
 								<goals>
 									<goal>single</goal>
 								</goals>
 								<configuration>
 									<finalName>${project.artifactId}-${project.version}</finalName>
+									<appendAssemblyId>false</appendAssemblyId>
 									<descriptors>
-										<descriptor>src${file.separator}assembly${file.separator}bin.xml</descriptor>
+										<descriptor>src/assembly/zip.xml</descriptor>
 									</descriptors>
-									<attach>false</attach>
 								</configuration>
 							</execution>
 						</executions>
 					</plugin>
+
+
 				</plugins>
 			</build>
 		</profile>

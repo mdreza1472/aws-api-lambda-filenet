@@ -22,11 +22,11 @@ public class LoggingAspect {
         String methodName = signature.getDeclaringType().getSimpleName() + "." + signature.getName();
 
         Object[] args = joinPoint.getArgs();
-        log.info("➡️ Entering {} with arguments: {}", methodName, Arrays.toString(args));
+        log.info("Entering {} with arguments: {}", methodName, Arrays.toString(args));
 
         Object result = joinPoint.proceed();
 
-        log.info("⬅️ Exiting {} with return value: {}", methodName, result);
+        log.info("Exiting {} with return value: {}", methodName, result);
         return result;
     }
 }
