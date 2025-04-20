@@ -1,4 +1,14 @@
 1. To download binary data from API gateway, you must do the mappings of the binary data
 2. A fat jar needs to be created which will extract all the dependency jars into a separate extracted folder structure.
 3. plugin assembly and shade will be utilized to create a fat jar
-4. 
+4. the final jar is uploaded to AWS Lambda Function console.
+5. SAP is external to AWS (on-premises):
+
+Decision														Action
+Use IAM User													Create a dedicated IAM user for SAP
+Attach execute-api:Invoke permissions only						Minimal permission principle
+Generate Access Key ID and Secret Access Key					Give these to SAP developer/administrator
+SAP must sign each HTTP request to API Gateway using SigV4		Required (AWS SigV4 signing)
+
+**SAP will use a middleware layer to include the Authorization header (AWS Signature) 
+when calling your API Gateway endpoint.
