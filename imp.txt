@@ -13,3 +13,38 @@ SAP must sign each HTTP request to API Gateway using SigV4		Required (AWS SigV4 
 **SAP will use a middleware layer to include the Authorization header (AWS Signature) 
 when calling your API Gateway endpoint.
 AWS SDK utilized*
+
+6.
+
+IAM Console → Users → Add User
+
+User Name: (e.g., sap-api-gateway-client)
+
+Access type: Programmatic Access only (no Console access needed)
+
+Attach Policy:
+
+Custom policy like this:
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "execute-api:Invoke",
+      "Resource": "arn:aws:execute-api:ap-southeast-2:your-account-id:api-id/prod/*"
+    }
+  ]
+}
+
+Only allow them to invoke your API.
+
+Download the credentials file (.csv):
+
+You’ll get:
+
+Access Key ID
+
+Secret Access Key
+
+Configure these credentials inside your Java middleware (in application.properties or environment variables).
